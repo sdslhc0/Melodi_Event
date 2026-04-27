@@ -16,7 +16,7 @@
                 <div class="relative">
                     <div class="aspect-[4/3] rounded-xl overflow-hidden border border-brown-800/20">
                         @if($acara->foto)
-                            <img src="{{ asset('storage/' . $acara->foto) }}" alt="{{ $acara->nama }}"
+                            <img src="{{ asset( $acara->foto) }}" alt="{{ $acara->nama }}"
                                  class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full bg-dark-100 flex items-center justify-center">
