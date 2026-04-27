@@ -34,11 +34,18 @@ class AcaraController extends Controller
         $data = $request->only(['id_kategori', 'nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('foto')) {
-            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
-                'folder' => 'acara'
-            ]);
-            $data['foto'] = $uploaded->getSecurePath();
-        }
+    try {
+        $uploaded = cloudinary()->upload(
+            $request->file('foto')->getRealPath(),
+            ['folder' => 'acara']
+        );
+
+        $data['foto'] = $uploaded->getSecurePath();
+
+    } catch (\Exception $e) {
+        return back()->with('error', $e->getMessage());
+    }
+}
 
         Acara::create($data);
 
