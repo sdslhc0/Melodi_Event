@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Acara;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AcaraController extends Controller
 {
@@ -34,10 +35,7 @@ class AcaraController extends Controller
         $data = $request->only(['id_kategori', 'nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('foto')) {
-            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
-                'folder' => 'acara'
-            ]);
-            $data['foto'] = $uploaded->getSecurePath();
+            $data['foto'] = $request->file('foto')->store('acara', 'public');
         }
 
         Acara::create($data);
@@ -65,10 +63,11 @@ class AcaraController extends Controller
         $data = $request->only(['id_kategori', 'nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('foto')) {
-            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
-                'folder' => 'acara'
-            ]);
-            $data['foto'] = $uploaded->getSecurePath();
+            // Delete old photo
+            if ($acara->foto) {
+                Storage::disk('public')->delete($acara->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('acara', 'public');
         }
 
         $acara->update($data);
@@ -79,6 +78,10 @@ class AcaraController extends Controller
 
     public function destroy(Acara $acara)
     {
+        if ($acara->foto) {
+            Storage::disk('public')->delete($acara->foto);
+        }
+
         $acara->delete();
 
         return redirect()->route('backend.acara.index')
