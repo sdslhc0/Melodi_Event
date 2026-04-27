@@ -89,3 +89,7 @@ Route::middleware(['auth', 'admin'])->prefix('backend')->name('backend.')->group
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/cek-cloudinary', function () {
+    dd(env('CLOUDINARY_URL'), config('cloudinary.cloud_url'));
+});
