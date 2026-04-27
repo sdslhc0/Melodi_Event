@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Acara;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
 
 class AcaraController extends Controller
 {
@@ -34,18 +35,22 @@ class AcaraController extends Controller
         $data = $request->only(['id_kategori', 'nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('foto')) {
-    try {
-        $uploaded = cloudinary()->upload(
-            $request->file('foto')->getRealPath(),
-            ['folder' => 'acara']
-        );
 
-        $data['foto'] = $uploaded->getSecurePath();
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
+            ]);
 
-    } catch (\Exception $e) {
-        return back()->with('error', $e->getMessage());
-    }
-}
+            $uploaded = $cloudinary->uploadApi()->upload(
+                $request->file('foto')->getRealPath(),
+                ['folder' => 'acara']
+            );
+
+            $data['foto'] = $uploaded['secure_url'];
+        }
 
         Acara::create($data);
 
@@ -72,10 +77,21 @@ class AcaraController extends Controller
         $data = $request->only(['id_kategori', 'nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('foto')) {
-            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
-                'folder' => 'acara'
+
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
             ]);
-            $data['foto'] = $uploaded->getSecurePath();
+
+            $uploaded = $cloudinary->uploadApi()->upload(
+                $request->file('foto')->getRealPath(),
+                ['folder' => 'acara']
+            );
+
+            $data['foto'] = $uploaded['secure_url'];
         }
 
         $acara->update($data);
