@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laporan Data Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
+        h2 {
+            text-align: center;
+            color: #4a4239;
+            margin-bottom: 5px;
+        }
+        p.period {
+            text-align: center;
+            color: #666;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4eedd;
+            color: #4a4239;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #fcfbf8;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .status {
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .status-pending { color: #d97706; }
+        .status-dibooking { color: #2563eb; }
+        .status-selesai { color: #16a34a; }
+        .status-batal { color: #dc2626; }
+    </style>
+</head>
+<body>
+    <h2>Laporan Data Booking Melodi Event Organizer</h2>
+    <p class="period">Periode: {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Klien</th>
+                <th>Kontak (WA/Email)</th>
+                <th>Jenis Acara</th>
+                <th>Tanggal & Jam</th>
+                <th>Metode Bayar</th>
+                <th>Total Harga</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $grandTotal = 0; @endphp
+            @forelse($bookings as $booking)
+                @php 
+                    $grandTotal += $booking->subtotal; 
+                    $status = $booking->detailBooking->status ?? 'pending';
+                    $statusClass = 'status-' . str_replace(' ', '', $status);
+                @endphp
+                <tr>
+                    <td class="text-center">#{{ $booking->id }}</td>
+                    <td>{{ $booking->nama_lengkap ?? $booking->user->nama ?? '-' }}</td>
+                    <td>
+                        {{ $booking->no_whatsapp ?? $booking->user->telepon ?? '-' }}<br>
+                        <small>{{ $booking->user->email ?? '' }}</small>
+                    </td>
+                    <td>{{ $booking->jenis_acara ?: '-' }}</td>
+                    <td>
+                        {{ $booking->tanggal->format('d/m/Y') }}<br>
+                        <small>{{ $booking->acara_mulai }} - {{ $booking->acara_selesai }}</small>
+                    </td>
+                    <td class="text-center">{{ strtoupper(str_replace('_', ' ', $booking->metode_pembayaran ?? '-')) }}</td>
+                    <td class="text-right">Rp {{ number_format($booking->subtotal, 0, ',', '.') }}</td>
+                    <td class="text-center">
+                        <span class="status {{ $statusClass }}">{{ $status }}</span>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8" class="text-center">Tidak ada data booking pada periode ini.</td>
+                </tr>
+            @endforelse
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6" class="text-right">TOTAL PENDAPATAN</th>
+                <th class="text-right">Rp {{ number_format($grandTotal, 0, ',', '.') }}</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
