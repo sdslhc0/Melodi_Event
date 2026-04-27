@@ -26,7 +26,7 @@
                     <tr class="hover:bg-dark-200/50 transition-colors">
                         <td class="px-6 py-4">
                             @if($bundling->gambar)
-                                <img src="{{ asset('storage/' . $bundling->gambar) }}" alt="{{ $bundling->nama }}" class="w-16 h-16 object-cover rounded-lg border border-brown-800/30">
+                                <img src="{{ asset(  $bundling->gambar) }}" alt="{{ $bundling->nama }}" class="w-16 h-16 object-cover rounded-lg border border-brown-800/30">
                             @else
                                 <div class="w-16 h-16 bg-dark rounded-lg border border-brown-800/30 flex items-center justify-center">
                                     <svg class="w-6 h-6 text-brown-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

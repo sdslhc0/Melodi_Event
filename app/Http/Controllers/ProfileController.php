@@ -7,7 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -37,10 +36,10 @@ class ProfileController extends Controller
         $user->fill($request->validated());
 
         if ($request->hasFile('foto')) {
-            if ($user->foto) {
-                Storage::disk('public')->delete($user->foto);
-            }
-            $user->foto = $request->file('foto')->store('avatars', 'public');
+            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
+                'folder' => 'avatars'
+            ]);
+            $user->foto = $uploaded->getSecurePath();
         }
 
         if ($user->isDirty('email')) {

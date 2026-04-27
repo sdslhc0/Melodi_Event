@@ -53,7 +53,7 @@
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-full border border-gold-500/30 overflow-hidden bg-dark-200 flex items-center justify-center shrink-0">
                                     @if(optional($booking->user)->foto)
-                                        <img src="{{ asset('storage/' . $booking->user->foto) }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset( $booking->user->foto) }}" class="w-full h-full object-cover">
                                     @else
                                         <span class="text-gold-500 text-sm font-bold">{{ strtoupper(substr($booking->nama_lengkap ?? optional($booking->user)->nama ?? 'U', 0, 1)) }}</span>
                                     @endif

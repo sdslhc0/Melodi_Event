@@ -27,7 +27,7 @@
                             <td class="px-6 py-4">
                                 <div class="w-16 h-12 rounded-lg overflow-hidden bg-dark-200">
                                     @if($acara->foto)
-                                        <img src="{{ asset('storage/' . $acara->foto) }}" alt="{{ $acara->nama }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset( $acara->foto) }}" alt="{{ $acara->nama }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center">
                                             <svg class="w-6 h-6 text-brown-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">

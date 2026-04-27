@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Acara;
 use App\Models\PaketBundling;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class PaketBundlingController extends Controller
 {
@@ -18,7 +17,6 @@ class PaketBundlingController extends Controller
 
     public function create()
     {
-        // Group acaras by kategori tipe for easy selection
         $acarasByTipe = Acara::with('kategori')->get()->groupBy(function ($acara) {
             return $acara->kategori->tipe ?? 'Lainnya';
         });
@@ -42,7 +40,10 @@ class PaketBundlingController extends Controller
         $data = $request->only(['nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            $data['gambar'] = $request->file('gambar')->store('paket-bundling', 'public');
+            $uploaded = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+                'folder' => 'paket-bundling'
+            ]);
+            $data['gambar'] = $uploaded->getSecurePath();
         }
 
         $paket = PaketBundling::create($data);
@@ -79,10 +80,10 @@ class PaketBundlingController extends Controller
         $data = $request->only(['nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            if ($bundling->gambar) {
-                Storage::disk('public')->delete($bundling->gambar);
-            }
-            $data['gambar'] = $request->file('gambar')->store('paket-bundling', 'public');
+            $uploaded = cloudinary()->upload($request->file('gambar')->getRealPath(), [
+                'folder' => 'paket-bundling'
+            ]);
+            $data['gambar'] = $uploaded->getSecurePath();
         }
 
         $bundling->update($data);
@@ -94,10 +95,6 @@ class PaketBundlingController extends Controller
 
     public function destroy(PaketBundling $bundling)
     {
-        if ($bundling->gambar) {
-            Storage::disk('public')->delete($bundling->gambar);
-        }
-
         $bundling->delete();
 
         return redirect()->route('backend.bundling.index')

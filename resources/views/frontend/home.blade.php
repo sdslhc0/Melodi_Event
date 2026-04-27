@@ -91,7 +91,7 @@
                     {{-- Image --}}
                     <div class="relative h-56 overflow-hidden">
                         @if($bundling->gambar)
-                            <img src="{{ asset('storage/' . $bundling->gambar) }}" alt="{{ $bundling->nama }}"
+                            <img src="{{ asset( $bundling->gambar) }}" alt="{{ $bundling->nama }}"
                                  loading="lazy"
                                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         @else

@@ -33,7 +33,7 @@
 
                     @if($bundling->gambar)
                         <div class="mb-3 flex items-center gap-3">
-                            <img src="{{ asset('storage/' . $bundling->gambar) }}" alt="{{ $bundling->nama }}" class="w-32 h-32 object-cover rounded-lg border border-brown-800/30">
+                            <img src="{{ asset( $bundling->gambar) }}" alt="{{ $bundling->nama }}" class="w-32 h-32 object-cover rounded-lg border border-brown-800/30">
                             <span class="text-xs text-brown-500">Gambar saat ini</span>
                         </div>
                     @endif

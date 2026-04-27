@@ -105,7 +105,7 @@
                             <button @click="open = !open" class="group flex items-center gap-3 focus:outline-none">
                                 <div class="w-8 h-8 rounded-full border border-gold-500/30 overflow-hidden bg-dark-200 flex items-center justify-center transition-all group-hover:border-gold-500/60">
                                     @if(Auth::user()->foto)
-                                        <img src="{{ asset('storage/' . Auth::user()->foto) }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset( Auth::user()->foto) }}" class="w-full h-full object-cover">
                                     @else
                                         <span class="text-gold-500 text-[10px] font-bold">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</span>
                                     @endif
@@ -137,7 +137,7 @@
                         <div x-data="{ openProfile: false }" class="relative">
                             <button @click="openProfile = !openProfile" class="w-8 h-8 rounded-full border border-gold-500/30 overflow-hidden bg-dark-200 flex items-center justify-center transition-all hover:border-gold-500/60 focus:outline-none">
                                 @if(Auth::user()->foto)
-                                    <img src="{{ asset('storage/' . Auth::user()->foto) }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset( Auth::user()->foto) }}" class="w-full h-full object-cover">
                                 @else
                                     <span class="text-gold-500 text-[10px] font-bold">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</span>
                                 @endif

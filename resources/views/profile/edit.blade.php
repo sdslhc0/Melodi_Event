@@ -17,7 +17,7 @@
             <div class="flex items-center gap-6">
                 <div class="w-20 h-20 rounded-full border-2 border-[#c9a84c]/50 overflow-hidden shadow-2xl">
                     @if($user->foto)
-                        <img src="{{ asset('storage/' . $user->foto) }}" class="w-full h-full object-cover">
+                        <img src="{{ asset( $user->foto) }}" class="w-full h-full object-cover">
                     @else
                         <div class="w-full h-full bg-[#c9a84c]/10 flex items-center justify-center text-[#c9a84c]">
                             <span class="text-3xl font-serif">{{ strtoupper(substr($user->nama, 0, 1)) }}</span>
@@ -74,7 +74,7 @@
                         <div class="relative group">
                             <div class="w-24 h-24 rounded-full border-2 border-[#c9a84c] overflow-hidden bg-[#2a231d] flex items-center justify-center">
                                 @if($user->foto)
-                                    <img id="avatar-preview" src="{{ asset('storage/' . $user->foto) }}" class="w-full h-full object-cover">
+                                    <img id="avatar-preview" src="{{ asset( $user->foto) }}" class="w-full h-full object-cover">
                                 @else
                                     <div id="avatar-placeholder" class="text-[#c9a84c]">
                                         <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">

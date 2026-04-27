@@ -88,7 +88,7 @@
                             <div class="card-dark group">
                                 <div class="relative aspect-[4/3] overflow-hidden">
                                     @if($item->foto)
-                                        <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}"
+                                        <img src="{{ asset( $item->foto) }}" alt="{{ $item->nama }}"
                                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     @else
                                         <div class="w-full h-full bg-dark-200 flex items-center justify-center">

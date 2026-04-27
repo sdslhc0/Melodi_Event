@@ -80,7 +80,7 @@
                                  @endif>
                             <div class="relative aspect-[4/3] overflow-hidden">
                                 @if($acara->foto)
-                                    <img src="{{ asset('storage/' . $acara->foto) }}" alt="{{ $acara->nama }}"
+                                    <img src="{{ asset( $acara->foto) }}" alt="{{ $acara->nama }}"
                                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                 @else
                                     <div class="w-full h-full bg-dark-200 flex items-center justify-center">
@@ -143,7 +143,7 @@
                                         {{-- Image Section (Lebih lebar proporsinya) --}}
                                         <div class="w-full md:w-5/12 lg:w-1/2 aspect-square md:aspect-auto">
                                             @if($acara->foto)
-                                                <img src="{{ asset('storage/' . $acara->foto) }}" alt="{{ $acara->nama }}" class="w-full h-full object-cover">
+                                                <img src="{{ asset( $acara->foto) }}" alt="{{ $acara->nama }}" class="w-full h-full object-cover">
                                             @else
                                                 <div class="w-full h-full bg-dark-200 flex items-center justify-center">
                                                     <svg class="w-20 h-20 text-brown-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">

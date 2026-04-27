@@ -49,7 +49,7 @@
                     <label class="label-melodi">Foto</label>
                     @if($acara->foto)
                         <div class="mb-3">
-                            <img src="{{ asset('storage/' . $acara->foto) }}" alt="{{ $acara->nama }}" class="w-40 h-28 object-cover rounded-lg border border-brown-800/30">
+                            <img src="{{ asset( $acara->foto) }}" alt="{{ $acara->nama }}" class="w-40 h-28 object-cover rounded-lg border border-brown-800/30">
                             <p class="text-brown-500 text-xs mt-1">Foto saat ini. Upload baru untuk mengganti.</p>
                         </div>
                     @endif

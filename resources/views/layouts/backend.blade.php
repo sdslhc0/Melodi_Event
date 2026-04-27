@@ -128,7 +128,7 @@
                         <span class="text-sm text-brown-400 group-hover:text-gold-400 transition-colors">{{ Auth::user()->nama }}</span>
                         <div class="w-8 h-8 bg-gold-500/20 rounded-full flex items-center justify-center border border-gold-500/30 overflow-hidden group-hover:border-gold-500/60 transition-colors">
                             @if(Auth::user()->foto)
-                                <img src="{{ asset('storage/' . Auth::user()->foto) }}" class="w-full h-full object-cover">
+                                <img src="{{ asset( Auth::user()->foto) }}" class="w-full h-full object-cover">
                             @else
                                 <span class="text-gold-400 text-xs font-bold">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</span>
                             @endif
