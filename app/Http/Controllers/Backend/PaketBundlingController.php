@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Acara;
 use App\Models\PaketBundling;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
 
 class PaketBundlingController extends Controller
 {
@@ -20,6 +21,7 @@ class PaketBundlingController extends Controller
         $acarasByTipe = Acara::with('kategori')->get()->groupBy(function ($acara) {
             return $acara->kategori->tipe ?? 'Lainnya';
         });
+
         return view('backend.bundling.create', compact('acarasByTipe'));
     }
 
@@ -40,10 +42,21 @@ class PaketBundlingController extends Controller
         $data = $request->only(['nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            $uploaded = cloudinary()->upload($request->file('gambar')->getRealPath(), [
-                'folder' => 'paket-bundling'
+
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
             ]);
-            $data['gambar'] = $uploaded->getSecurePath();
+
+            $uploaded = $cloudinary->uploadApi()->upload(
+                $request->file('gambar')->getRealPath(),
+                ['folder' => 'paket-bundling']
+            );
+
+            $data['gambar'] = $uploaded['secure_url'];
         }
 
         $paket = PaketBundling::create($data);
@@ -56,10 +69,13 @@ class PaketBundlingController extends Controller
     public function edit(PaketBundling $bundling)
     {
         $bundling->load('acaras');
+
         $acarasByTipe = Acara::with('kategori')->get()->groupBy(function ($acara) {
             return $acara->kategori->tipe ?? 'Lainnya';
         });
+
         $selectedAcaraIds = $bundling->acaras->pluck('id')->toArray();
+
         return view('backend.bundling.edit', compact('bundling', 'acarasByTipe', 'selectedAcaraIds'));
     }
 
@@ -80,10 +96,21 @@ class PaketBundlingController extends Controller
         $data = $request->only(['nama', 'harga', 'deskripsi']);
 
         if ($request->hasFile('gambar')) {
-            $uploaded = cloudinary()->upload($request->file('gambar')->getRealPath(), [
-                'folder' => 'paket-bundling'
+
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
             ]);
-            $data['gambar'] = $uploaded->getSecurePath();
+
+            $uploaded = $cloudinary->uploadApi()->upload(
+                $request->file('gambar')->getRealPath(),
+                ['folder' => 'paket-bundling']
+            );
+
+            $data['gambar'] = $uploaded['secure_url'];
         }
 
         $bundling->update($data);

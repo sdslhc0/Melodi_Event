@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Cloudinary\Cloudinary;
 
 class ProfileController extends Controller
 {
@@ -30,10 +31,21 @@ class ProfileController extends Controller
         $user->fill($request->validated());
 
         if ($request->hasFile('foto')) {
-            $uploaded = cloudinary()->upload($request->file('foto')->getRealPath(), [
-                'folder' => 'avatars'
+
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key'    => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
             ]);
-            $user->foto = $uploaded->getSecurePath();
+
+            $uploaded = $cloudinary->uploadApi()->upload(
+                $request->file('foto')->getRealPath(),
+                ['folder' => 'avatars']
+            );
+
+            $user->foto = $uploaded['secure_url'];
         }
 
         if ($user->isDirty('email')) {
@@ -42,6 +54,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return Redirect::route('backend.profile.edit')->with('success', 'Profil admin berhasil diperbarui.');
+        return Redirect::route('backend.profile.edit')
+            ->with('success', 'Profil admin berhasil diperbarui.');
     }
 }
